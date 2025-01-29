@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Register Page{% endblock %}
+
+{% block content %}
+    <!-- Registration Form -->
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <!-- Card Header with Gradient Animation -->
+                    <div class="card-header gradient-header text-white text-center">
+                        <h4>Create an Account</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="/register">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirm_password" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                            </div>
+                            <div class="d-grid">
+                                <!-- Button with Gradient Animation -->
+                                <button type="submit" class="btn gradient-button">Register</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer text-center">
+                        <p>Already have an account? <a href="/login">Login here</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<style>
+    /* Gradient Animation for Card Header */
+    .gradient-header {
+        background: linear-gradient(160deg, #0081d6, #3498db, #575aff, #bc61e2, #8e44ad, #7c00b1);
+        background-size: 300% 300%;
+        animation: gradientShift 6s ease infinite;
+        border-radius: 8px 8px 0 0; /* Rounded corners for the top of the card */
+    }
+
+    /* Gradient Animation for Register Button */
+    .gradient-button {
+        background: linear-gradient(90deg, #3aff3a, #00c531, #00b460, #004526);
+        background-size: 300% 300%;
+        color: white;
+        border: none;
+        font-size: 1rem;
+        font-weight: bold;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        animation: gradientShift 6s ease infinite;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .gradient-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Gradient Animation Keyframes */
+    @keyframes gradientShift {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+</style>
+{% endblock %}

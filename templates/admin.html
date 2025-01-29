@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Admin Dashboard</h2>
+
+    <!-- Summary Boxes -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-primary text-center">
+                <div class="card-body">
+                    <h4>Total Users</h4>
+                    <h2>{{ total_users }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-success text-center">
+                <div class="card-body">
+                    <h4>Total Blogs</h4>
+                    <h2>{{ total_blogs }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Users List -->
+    <div class="card">
+        <div class="card-header bg-dark text-white">
+            <h4>Registered Users</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Number of Blogs</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.blog_count }}</td>
+                        <td>
+                            <a href="{{ url_for('delete_user', user_id=user._id) }}" 
+                               class="btn btn-danger btn-sm" 
+                               onclick="return confirm('Are you sure you want to delete this user?');">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

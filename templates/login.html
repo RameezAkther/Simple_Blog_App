@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Login Page{% endblock %}
+
+{% block content %}
+    <!-- Login Form -->
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="login-container card p-5 shadow-lg">
+            <h3 class="text-center mb-4">Login</h3>
+            <form action="/login" method="POST">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn gradient-button">Login</button>
+                </div>
+                <p class="text-center mt-3">
+                    Don't have an account? <a href="/register">Sign Up</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+<style>
+    /* Gradient Animation for the Login Button */
+    .gradient-button {
+        background: linear-gradient(90deg, #0081d6, #3498db, #575aff, #bc61e2, #8e44ad, #7c00b1);
+        background-size: 300% 300%;
+        color: white;
+        border: none;
+        font-size: 1rem;
+        font-weight: bold;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        animation: gradientShift 6s ease infinite;
+        transition: transform 0.2s;
+    }
+
+    .gradient-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    @keyframes gradientShift {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    /* Additional styling for login container */
+    .login-container {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+</style>
+{% endblock %}
