@@ -7,7 +7,7 @@
     <div class="card">
         <div class="card-header gradient-animation text-white">
             <h3>{{ post['title'] }}</h3>
-            <p class="mb-0">By <strong>{{ post['author'] }}</strong> on {{ post['created_at']}}</p>
+            <p class="mb-0">By <strong>{{ post['author'] }}</strong> on {{ post['created_at'] }}</p>
         </div>
         <div class="card-body">
             <div class="markdown-content">
@@ -24,6 +24,44 @@
             {% endif %}
         </div>
     </div>
+
+    <!-- Comments Section -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h4>Comments</h4>
+        </div>
+        <div class="card-body">
+            {% if session.get('username') %}
+                <form action="{{ url_for('add_comment', post_id=post['_id']) }}" method="POST">
+                    <div class="mb-3">
+                        <textarea class="form-control" name="comment" rows="3" placeholder="Write a comment..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Post Comment</button>
+                </form>
+            {% else %}
+                <p class="text-danger">You must <a href="{{ url_for('login') }}">log in</a> to comment.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Display Comments -->
+    {% for comment in comments %}
+    <div class="card mt-3">
+        <div class="card-body">
+            <p><strong>{{ comment['author'] }}</strong> said:</p>
+            <p>{{ comment['content'] }}</p>
+            <div class="d-flex justify-content-between">
+                <div>
+                    <button class="btn btn-outline-success btn-sm upvote-btn" data-id="{{ comment['_id'] }}">▲ {{ comment['upvotes'] }}</button>
+                    <button class="btn btn-outline-danger btn-sm downvote-btn" data-id="{{ comment['_id'] }}">▼ {{ comment['downvotes'] }}</button>
+                </div>
+                {% if session.get('username') == comment['author'] or session.get('is_admin') %}
+                    <a href="{{ url_for('delete_comment', comment_id=comment['_id'], post_id=post['_id']) }}" class="btn btn-danger btn-sm">Delete</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 </div>
 
 <style>
@@ -46,4 +84,42 @@
         }
     }
 </style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll('.upvote-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                fetch(`/upvote/${this.dataset.id}`, { method: 'POST' })
+                    .then(response => response.json().then(data => ({ status: response.status, body: data })))
+                    .then(result => {
+                        if (result.status === 200) {
+                            this.innerText = `▲ ${result.body.upvotes}`;
+                            this.nextElementSibling.innerText = `▼ ${result.body.downvotes}`;
+                        } else {
+                            alert(result.body.error); // Show error message to user
+                        }
+                    })
+                    .catch(error => console.error("Error:", error));
+            });
+        });
+
+        document.querySelectorAll('.downvote-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                fetch(`/downvote/${this.dataset.id}`, { method: 'POST' })
+                    .then(response => response.json().then(data => ({ status: response.status, body: data })))
+                    .then(result => {
+                        if (result.status === 200) {
+                            this.innerText = `▼ ${result.body.downvotes}`;
+                            this.previousElementSibling.innerText = `▲ ${result.body.upvotes}`;
+                        } else {
+                            alert(result.body.error); // Show error message to user
+                        }
+                    })
+                    .catch(error => console.error("Error:", error));
+            });
+        });
+    });
+</script>
+
+
 {% endblock %}
